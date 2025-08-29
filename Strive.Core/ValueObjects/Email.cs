@@ -17,6 +17,7 @@ public class Email : ValueObject
             .IsNotNullOrEmpty(address, nameof(Address), "Informe o endereço de e-mail.")
             .IsEmail(address, nameof(address), "Endereço de e-mail inválido."));
         Verification = new Verification();
+        AddNotifications(Verification);
 
         if (!IsValid)
             return;

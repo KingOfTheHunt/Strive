@@ -11,14 +11,14 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddDbContext<AppDbContext>(options =>
-        {
-            options.UseSqlServer(Configuration.Database.Connection,
-                x => x.MigrationsAssembly("Strive.Api"));
-        });
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<Strive.Application.UseCases.Users.Create.Contracts.IRepository,
             Strive.Infrastructure.UseCases.Users.Create.Repository>();
+
+        services.AddTransient<Application.UseCases.Users.Verify.Contracts.IRepository,
+            Infrastructure.UseCases.Users.Verify.Repository>();
+        services.AddTransient<Application.UseCases.Users.Verify.Contracts.IEmailService,
+            Infrastructure.UseCases.Users.Verify.EmailService>();
         return services;
     }
 }
