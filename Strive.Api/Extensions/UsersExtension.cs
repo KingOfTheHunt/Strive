@@ -31,5 +31,18 @@ public static class UsersExtension
 
             return Results.Json(result, statusCode: result.StatusCode);
         });
+        
+        // Resend verification code
+        app.MapPut("api/v1/users/resend-verification", async (
+            Application.UseCases.Users.ResendVerification.Request request, IMediator mediator) =>
+        {
+            var result = await mediator.SendAsync<Application.UseCases.Users.ResendVerification.Request,
+                Application.UseCases.Users.ResendVerification.Response>(request);
+
+            if (result.IsSuccess)
+                return Results.Ok(result);
+
+            return Results.Json(result, statusCode: result.StatusCode);
+        });
     }
 }
