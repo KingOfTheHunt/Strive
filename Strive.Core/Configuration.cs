@@ -3,6 +3,7 @@ namespace Strive.Core;
 public static class Configuration
 {
     public static string PrivateKey { get; set; } = string.Empty;
+    public static string JwtKey { get; set; } = string.Empty;
     public static DatabaseConfiguration Database { get; } = new();
     public static SmtpConfiguration Smtp { get; } = new();
 }
