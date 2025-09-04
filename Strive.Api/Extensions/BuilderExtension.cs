@@ -1,4 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Strive.Core;
 using Strive.Infrastructure.Data;
 
@@ -19,6 +22,7 @@ public static class BuilderExtension
                                    string.Empty;
         Configuration.Smtp.Password = builder.Configuration.GetSection("Smtp").GetValue<string>("Password") ??
                                       string.Empty;
+        Configuration.JwtKey = builder.Configuration.GetValue<string>("JwtKey") ?? string.Empty;
     }
 
     public static void AddDatabase(this IServiceCollection services)
@@ -28,5 +32,28 @@ public static class BuilderExtension
             options.UseSqlServer(Configuration.Database.Connection,
                 x => x.MigrationsAssembly(typeof(Program).Assembly));
         });
+    }
+
+    public static void AddJwtAuth(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.JwtKey)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true
+                };
+            });
+
+        builder.Services.AddAuthorization();
     }
 }

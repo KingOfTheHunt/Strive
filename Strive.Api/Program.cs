@@ -9,9 +9,12 @@ builder.Services.AddDatabase();
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
 builder.Services.AddOpenApi();
+builder.AddJwtAuth();
 
 var app = builder.Build();
 app.MapUsersEndpoints();
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
