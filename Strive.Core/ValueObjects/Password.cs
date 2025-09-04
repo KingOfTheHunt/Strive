@@ -26,4 +26,7 @@ public class Password : ValueObject
 
         Hash = PasswordHasher.Hash(password, privateKey: Configuration.PrivateKey);
     }
+
+    public bool Challenge(string password) =>
+        PasswordHasher.Verify(Hash, password, privateKey: Configuration.PrivateKey);
 }
