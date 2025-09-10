@@ -5,10 +5,10 @@ using Strive.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
-builder.Services.AddDatabase();
+builder.AddDatabase();
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
-builder.Services.AddOpenApi();
+builder.AddOpenApi();
 builder.AddJwtAuth();
 
 var app = builder.Build();

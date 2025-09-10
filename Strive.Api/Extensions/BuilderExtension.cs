@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Strive.Core;
 using Strive.Infrastructure.Data;
 
@@ -25,9 +26,9 @@ public static class BuilderExtension
         Configuration.JwtKey = builder.Configuration.GetValue<string>("JwtKey") ?? string.Empty;
     }
 
-    public static void AddDatabase(this IServiceCollection services)
+    public static void AddDatabase(this WebApplicationBuilder builder)
     {
-        services.AddDbContext<AppDbContext>(options =>
+        builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(Configuration.Database.Connection,
                 x => x.MigrationsAssembly(typeof(Program).Assembly));
@@ -55,5 +56,27 @@ public static class BuilderExtension
             });
 
         builder.Services.AddAuthorization();
+    }
+
+    public static void AddOpenApi(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddOpenApi(options =>
+        {
+            options.AddDocumentTransformer((document, context, cancellationToken) =>
+            {
+                document.Components ??= new OpenApiComponents();
+                document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Description = "Insira o token aqui"
+                };
+
+                return Task.CompletedTask;
+            });
+        });
     }
 }
