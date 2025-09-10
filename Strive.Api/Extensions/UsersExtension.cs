@@ -84,6 +84,26 @@ public static class UsersExtension
             .Produces<Application.UseCases.Users.Authenticate.Response>()
             .Produces<Application.UseCases.Users.Authenticate.Response>(statusCode: 400)
             .Produces<Application.UseCases.Users.Authenticate.Response>(statusCode: 404);
+        
+        // Details
+        app.MapGet("api/v1/users/details", async (HttpContext context, IMediator mediator) =>
+            {
+                var userId = int.Parse(context.User.Identity.Name);
+                var request = new Application.UseCases.Users.Details.Request(userId);
+                var result = await mediator.SendAsync<Application.UseCases.Users.Details.Request,
+                    Application.UseCases.Users.Details.Response>(request);
 
+                if (result.IsSuccess)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .WithTags("Users")
+            .WithDescription("Get the account data")
+            .Produces<Application.UseCases.Users.Details.Response>()
+            .Produces<Application.UseCases.Users.Details.Response>(statusCode: 400)
+            .Produces(statusCode: 401)
+            .Produces<Application.UseCases.Users.Details.Response>(statusCode: 404)
+            .RequireAuthorization();
     }
 }

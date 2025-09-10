@@ -8,15 +8,15 @@ public static class DependencyInjection
     {
         // Create
         services.AddTransient<Strive.Application.UseCases.Users.Create.Contracts.IEmailService,
-            Strive.Infrastructure.UseCases.Users.Create.EmailService>();
+            UseCases.Users.Create.EmailService>();
         services.AddTransient<Strive.Application.UseCases.Users.Create.Contracts.IRepository,
-            Strive.Infrastructure.UseCases.Users.Create.Repository>();
+            UseCases.Users.Create.Repository>();
 
         // Verify
         services.AddTransient<Application.UseCases.Users.Verify.Contracts.IRepository,
-            Infrastructure.UseCases.Users.Verify.Repository>();
+            UseCases.Users.Verify.Repository>();
         services.AddTransient<Application.UseCases.Users.Verify.Contracts.IEmailService,
-            Infrastructure.UseCases.Users.Verify.EmailService>();
+            UseCases.Users.Verify.EmailService>();
 
         // Resend verification
         services.AddTransient<Application.UseCases.Users.ResendVerification.Contracts.IRepository,
@@ -27,6 +27,10 @@ public static class DependencyInjection
         // Authenticate
         services.AddTransient<Application.UseCases.Users.Authenticate.Contracts.IRepository,
             UseCases.Users.Authenticate.Repository>();
+        
+        // Details
+        services.AddTransient<Application.UseCases.Users.Details.Contracts.IRepository,
+            UseCases.Users.Details.Repository>();
 
         return services;
     }
