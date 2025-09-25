@@ -14,7 +14,8 @@ public class Email : ValueObject
     {
         AddNotifications(new Contract<Email>()
             .Requires()
-            .IsEmailOrEmpty(address, "email", "O e-mail precisa ser informado."));
+            .IsNotNullOrEmpty(address, "email", "O e-mail precisa ser informado.")
+            .IsEmail(address, "email", "O e-mail inválido."));
 
         if (!IsValid)
             return;
