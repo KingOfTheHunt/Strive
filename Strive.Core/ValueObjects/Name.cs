@@ -29,4 +29,9 @@ public class Name : ValueObject
         FirstName = firstName;
         LastName = lastName;
     }
+
+    public override string ToString()
+    {
+        return $"{FirstName} {LastName}";
+    }
 }
