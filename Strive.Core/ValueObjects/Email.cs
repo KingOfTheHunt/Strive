@@ -23,9 +23,6 @@ public class Email : ValueObject
         Address = address;
         Verification = new Verification();
     }
-
-    public override string ToString() => Address.ToLower();
-
-    public static implicit operator string(Email email) => email.ToString();
+    
     public static implicit operator Email(string address) => new Email(address);
 }
