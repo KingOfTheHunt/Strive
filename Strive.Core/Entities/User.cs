@@ -16,7 +16,7 @@ public class User : Entity
     {
         AddNotifications(new Contract<User>()
             .Requires()
-            .IsNotNull(name, nameof(name), "O nome precisa ser informado")
+            .IsNotNull(name, nameof(name), "O nome precisa ser informado.")
             .IsNotNull(email, nameof(email), "O e-mail precisa ser informado.")
             .IsNotNull(password, nameof(password), "A senha precisa ser informada."));
 
@@ -32,5 +32,21 @@ public class User : Entity
         Name = name;
         Email = email;
         Password = password;
+    }
+
+    public void ChangeName(Name name) => Name = name;
+
+    public void ChangePassword(Password password) => Password = password;
+
+    public void ResetPassword(string newPassword, string resetCode)
+    {
+        if (string.Equals(resetCode.Trim(), Password.ResetCode.Trim(),
+                StringComparison.InvariantCultureIgnoreCase) == false)
+        {
+            AddNotification("ResetCode", "Código de reset de senha inválido.");
+            return;
+        }
+
+        Password = new Password(newPassword);
     }
 }
