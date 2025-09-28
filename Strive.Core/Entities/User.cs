@@ -9,6 +9,7 @@ public class User : Entity
     public Name Name { get; private set; } = null!;
     public Email Email { get; private set; } = null!;
     public Password Password { get; private set; } = null!;
+    public IList<Workout> Workouts { get; private set; } = [];
 
     protected User() {}
     
