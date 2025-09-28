@@ -14,7 +14,9 @@ public class ExerciseTime : ValueObject
         AddNotifications(new Contract<ExerciseTime>()
             .Requires()
             .IsGreaterOrEqualsThan(timeInSeconds, 10, nameof(timeInSeconds),
-                "O tempo do exercício não pode ser menor do que 10 segundos."));
+                "O tempo do exercício não pode ser menor do que 10 segundos.")
+            .IsLowerOrEqualsThan(timeInSeconds, 360, nameof(timeInSeconds),
+                "O tempo do exercício não pode ultrapassar 360 segundos."));
 
         if (!IsValid)
             return;
