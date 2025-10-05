@@ -96,7 +96,7 @@ public class WorkoutExerciseTests
     {
         byte newRepetitions = 255;
         var workoutExercise = new WorkoutExercise(1, 1, _validSets, _validRepetitions);
-        byte currentRepetitions = workoutExercise.Repetitions!.Repetitions;
+        var currentRepetitions = workoutExercise.Repetitions!.Repetitions;
         
         workoutExercise.UpdateRepetitions(newRepetitions);
         
