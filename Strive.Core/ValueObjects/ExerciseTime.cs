@@ -5,7 +5,7 @@ namespace Strive.Core.ValueObjects;
 
 public class ExerciseTime : ValueObject
 {
-    public int TimeInSeconds { get; private set; }
+    public int? TimeInSeconds { get; private set; }
     
     protected ExerciseTime() {}
 

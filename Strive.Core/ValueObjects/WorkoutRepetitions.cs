@@ -5,7 +5,7 @@ namespace Strive.Core.ValueObjects;
 
 public class WorkoutRepetitions : ValueObject
 {
-    public byte Repetitions { get; private set; }
+    public byte? Repetitions { get; private set; }
     
     protected WorkoutRepetitions() {}
 

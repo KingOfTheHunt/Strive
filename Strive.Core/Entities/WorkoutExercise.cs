@@ -11,9 +11,9 @@ public class WorkoutExercise : Entity
     public Exercise Exercise { get; private set; } = null!;
     public int ExerciseId { get; private set; }
     public WorkoutSets Sets { get; private set; } = null!;
-    public WorkoutRepetitions? Repetitions { get; private set; }
-    public ExerciseWeight? Weight { get; private set; }
-    public ExerciseTime? Duration { get; private set; }
+    public WorkoutRepetitions Repetitions { get; private set; } = null!;
+    public ExerciseWeight Weight { get; private set; } = null!;
+    public ExerciseTime Duration { get; private set; } = null!;
     
     protected WorkoutExercise() {}
 

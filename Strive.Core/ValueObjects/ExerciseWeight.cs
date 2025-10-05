@@ -5,7 +5,7 @@ namespace Strive.Core.ValueObjects;
 
 public class ExerciseWeight : ValueObject
 {
-    public float Weight { get; private set; }
+    public float? Weight { get; private set; }
     
     protected ExerciseWeight() {}
 

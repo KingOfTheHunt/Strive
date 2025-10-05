@@ -5,8 +5,8 @@ namespace Strive.Core.Entities;
 
 public class WorkoutSession : Entity
 {
-    public WorkoutCommentary? Commentary { get; private set; }
-    public ScheduledAt? ScheduledAt { get; private set; }
+    public WorkoutCommentary Commentary { get; private set; } = null!;
+    public ScheduledAt ScheduledAt { get; private set; } = null!;
     public bool Done { get; private set; }
     public Workout Workout { get; private set; } = null!;
     public int WorkoutId { get; private set; }

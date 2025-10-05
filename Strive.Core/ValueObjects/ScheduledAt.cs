@@ -5,7 +5,7 @@ namespace Strive.Core.ValueObjects;
 
 public class ScheduledAt : ValueObject
 {
-    public DateTime Date { get; private set; }
+    public DateTime? Date { get; private set; }
 
     protected ScheduledAt() {}
 
