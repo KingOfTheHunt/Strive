@@ -23,5 +23,24 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.Create.Response>(201)
             .Produces<Application.Users.UseCases.Create.Response>(400)
             .Produces<Application.Users.UseCases.Create.Response>(500);
+
+        app.MapPost("v1/users/verify", async (Application.Users.UseCases.Verify.Request request,
+                IMediator mediator) =>
+            {
+                var result = await mediator.SendAsync<Application.Users.UseCases.Verify.Request,
+                    Application.Users.UseCases.Verify.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .WithTags("Users")
+            .WithDescription("Verify an user account")
+            .Produces<Application.Users.UseCases.Verify.Response>()
+            .Produces<Application.Users.UseCases.Verify.Response>(400)
+            .Produces<Application.Users.UseCases.Verify.Response>(404)
+            .Produces<Application.Users.UseCases.Verify.Response>(500);
+
     }
 }
