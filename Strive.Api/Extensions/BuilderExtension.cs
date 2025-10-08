@@ -10,6 +10,15 @@ public static class BuilderExtension
     {
         Configuration.Database.Connection = builder.Configuration
             .GetConnectionString("Default") ?? string.Empty;
+
+        Configuration.Smtp.Host = builder.Configuration.GetSection("Smtp")
+            .GetValue<string>("Host") ?? string.Empty;
+        Configuration.Smtp.Port = builder.Configuration.GetSection("Smtp")
+            .GetValue<int>("Port");
+        Configuration.Smtp.Login = builder.Configuration.GetSection("Smtp")
+            .GetValue<string>("Login") ?? string.Empty;
+        Configuration.Smtp.Password = builder.Configuration.GetSection("Smtp")
+            .GetValue<string>("Password") ?? string.Empty;
     }
 
     public static void AddDatabase(this WebApplicationBuilder builder)
