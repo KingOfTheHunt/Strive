@@ -18,7 +18,7 @@ public class EmailService : IEmailService
                     Seja bem vindo ao Strive! <br/>
                     É necessário ativar a sua conta e para fazer isso basta informar o código abaixo.<br/>
                     <strong>Código de verificação:</strong> {user.Email.Verification.Code}<br/>
-                    Esse código é válido até as {user.Email.Verification.ExpiresAt}
+                    Esse código é válido até as {user.Email.Verification.ExpiresAt!.Value.ToLocalTime()}
                     """;
         var message = MailHelper.CrateMimeMessage(from, to, userName, subject, body);
         await MailHelper.SendEmailAsync(message, cancellationToken);
