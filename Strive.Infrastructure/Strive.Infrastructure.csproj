@@ -7,10 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="MailKit" Version="4.14.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Strive.Application\Strive.Application.csproj" />
       <ProjectReference Include="..\Strive.Core\Strive.Core.csproj" />
     </ItemGroup>
 
