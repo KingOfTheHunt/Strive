@@ -1,11 +1,13 @@
 using MedTheMediator.Abstractions;
+using Microsoft.Extensions.Logging;
 using Strive.Application.Users.UseCases.Create.Contracts;
 using Strive.Core.Entities;
 using Strive.Core.ValueObjects;
 
 namespace Strive.Application.Users.UseCases.Create;
 
-public class Handler(IRepository repository, IEmailService emailService) : IHandler<Request, Response>
+public class Handler(IRepository repository, IEmailService emailService, ILogger<Handler> logger) 
+    : IHandler<Request, Response>
 {
     public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken = new())
     {
@@ -22,6 +24,7 @@ public class Handler(IRepository repository, IEmailService emailService) : IHand
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, "Erro ao verificar se o e-mail já existe.");
             return new Response(false, ex.Message, 500);
         }
 
@@ -41,13 +44,15 @@ public class Handler(IRepository repository, IEmailService emailService) : IHand
         {
             await repository.SaveAsync(user, cancellationToken);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            logger.LogError(ex, "Erro ao salvar o usuário no banco de dados.");
             return new Response(false, "Houve um erro inesperado.", 500);
         }
         
         await emailService.SendWelcomeEmail(user, cancellationToken);
 
+        logger.LogInformation("Usuário cadastrado com sucesso!");
         return new Response(true, "Conta criada com sucesso!", 201);
     }
 }

@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using Serilog;
 using Strive.Api.Extensions;
 using Strive.Application;
 using Strive.Infrastructure;
@@ -6,6 +7,7 @@ using Strive.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
 builder.AddDatabase();
+builder.AddSerilog();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
@@ -26,5 +28,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.Run();

@@ -1,10 +1,11 @@
 using MedTheMediator.Abstractions;
+using Microsoft.Extensions.Logging;
 using Strive.Application.Users.UseCases.Verify.Contracts;
 using Strive.Core.Entities;
 
 namespace Strive.Application.Users.UseCases.Verify;
 
-public class Handler(IRepository repository) : IHandler<Request, Response>
+public class Handler(IRepository repository, ILogger<Handler> logger) : IHandler<Request, Response>
 {
     public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken = new CancellationToken())
     {
@@ -21,6 +22,7 @@ public class Handler(IRepository repository) : IHandler<Request, Response>
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, "Erro o usuário no banco.");
             return new Response(false, ex.Message, 500);
         }
 
@@ -39,9 +41,11 @@ public class Handler(IRepository repository) : IHandler<Request, Response>
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, "Erro ao salvar os dados do usuário no banco.");
             return new Response(false, ex.Message, 500);
         }
 
+        logger.LogInformation("Sucesso ao verificar a conta do usuário.");
         return new Response(true, "Conta verificada com sucesso!", 200);
     }
 }

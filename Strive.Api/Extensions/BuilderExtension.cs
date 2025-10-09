@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Strive.Core;
 using Strive.Infrastructure.Data;
 
@@ -27,6 +28,14 @@ public static class BuilderExtension
         {
             options.UseSqlServer(Configuration.Database.Connection, x =>
                 x.MigrationsAssembly(typeof(Program).Assembly));
+        });
+    }
+
+    public static void AddSerilog(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((context, configuration) =>
+        {
+            configuration.ReadFrom.Configuration(context.Configuration);
         });
     }
 }

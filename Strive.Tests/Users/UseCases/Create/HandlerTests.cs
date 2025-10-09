@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using Strive.Application.Users.UseCases.Create;
 using Strive.Application.Users.UseCases.Create.Contracts;
@@ -9,13 +10,15 @@ public class HandlerTests
 {
     private readonly Mock<IRepository> _repositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
+    private readonly Mock<ILogger<Handler>> _loggerMock;
     private readonly Handler _handler;
 
     public HandlerTests()
     {
         _repositoryMock = new Mock<IRepository>();
         _emailServiceMock = new Mock<IEmailService>();
-        _handler = new Handler(_repositoryMock.Object, _emailServiceMock.Object);
+        _loggerMock = new Mock<ILogger<Handler>>();
+        _handler = new Handler(_repositoryMock.Object, _emailServiceMock.Object, _loggerMock.Object);
     }
 
     [Fact]
