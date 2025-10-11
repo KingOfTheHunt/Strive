@@ -15,5 +15,9 @@ public static class DependencyInjection
         // Users - Verify
         services.AddTransient<Application.Users.UseCases.Verify.Contracts.IRepository,
             Users.UseCases.Verify.Repository>();
+        
+        // Users - Authenticate
+        services.AddTransient<Application.Users.UseCases.Authenticate.Contracts.IRepository,
+            Users.UseCases.Authenticate.Repository>();
     }
 }

@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
 builder.AddDatabase();
 builder.AddSerilog();
+builder.AddJwtAuthentication();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
@@ -30,4 +31,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();

@@ -24,6 +24,7 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.Create.Response>(400)
             .Produces<Application.Users.UseCases.Create.Response>(500);
 
+        // Verify
         app.MapPost("v1/users/verify", async (Application.Users.UseCases.Verify.Request request,
                 IMediator mediator) =>
             {
@@ -42,5 +43,25 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.Verify.Response>(404)
             .Produces<Application.Users.UseCases.Verify.Response>(500);
 
+        // Authenticate
+        app.MapPost("v1/users/auth", async (Application.Users.UseCases.Authenticate.Request request,
+                IMediator mediator) =>
+            {
+                var result = await mediator.SendAsync<Application.Users.UseCases.Authenticate.Request,
+                    Application.Users.UseCases.Authenticate.Response>(request);
+
+                if (result.Success)
+                {
+                    result.Data!.Token = JwtExtension.Generate(result.Data);
+                    return Results.Ok(result);
+                }
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .WithTags("Users")
+            .WithDescription("Generates a JWT")
+            .Produces<Application.Users.UseCases.Authenticate.Response>()
+            .Produces<Application.Users.UseCases.Authenticate.Response>(400)
+            .Produces<Application.Users.UseCases.Authenticate.Response>(500);
     }
 }
