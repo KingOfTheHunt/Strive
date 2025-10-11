@@ -2,6 +2,7 @@ namespace Strive.Core;
 
 public static class Configuration
 {
+    public static string JwtKey { get; set; }
     public static DatabaseConnection Database { get; private set; } = new();
     public static Smtp Smtp { get; private set; } = new();
 }
