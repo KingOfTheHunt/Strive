@@ -14,7 +14,7 @@ public static class UserExtension
                     Application.Users.UseCases.Create.Response>(request);
 
                 if (result.Success)
-                    return Results.Created("v1/users/me", result);
+                    return Results.Created("v1/users/details", result);
 
                 return Results.Json(result, statusCode: result.StatusCode);
             })
@@ -82,5 +82,26 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.ResendVerification.Response>(400)
             .Produces<Application.Users.UseCases.ResendVerification.Response>(404)
             .Produces<Application.Users.UseCases.ResendVerification.Response>(500);
+        
+        // User - Details
+        app.MapGet("v1/users/details", async (HttpContext context, IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int id);
+                var request = new Application.Users.UseCases.Details.Request(id);
+                var result = await mediator.SendAsync<Application.Users.UseCases.Details.Request,
+                    Application.Users.UseCases.Details.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .RequireAuthorization()
+            .WithTags("Users")
+            .WithDescription("Get the user information")
+            .Produces<Application.Users.UseCases.Details.Response>()
+            .Produces<Application.Users.UseCases.Details.Response>(400)
+            .Produces<Application.Users.UseCases.Details.Response>(404)
+            .Produces<Application.Users.UseCases.Details.Response>(500);
     }
 }

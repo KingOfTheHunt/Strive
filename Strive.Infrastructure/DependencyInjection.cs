@@ -25,5 +25,9 @@ public static class DependencyInjection
             Users.UseCases.ResendVerification.Repository>();
         services.AddTransient<Application.Users.UseCases.ResendVerification.Contracts.IEmailService,
             Users.UseCases.ResendVerification.EmailService>();
+        
+        // Users - Details
+        services.AddTransient<Application.Users.UseCases.Details.Contracts.IRepository,
+            Users.UseCases.Details.Repository>();
     }
 }
