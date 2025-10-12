@@ -103,5 +103,26 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.Details.Response>(400)
             .Produces<Application.Users.UseCases.Details.Response>(404)
             .Produces<Application.Users.UseCases.Details.Response>(500);
+
+        app.MapPut("v1/users/change-password", async (HttpContext context,
+                Application.Users.UseCases.ChangePassword.Request request,
+                IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int userId);
+                var result = await mediator.SendAsync<Application.Users.UseCases.ChangePassword.Request,
+                    Application.Users.UseCases.ChangePassword.Response>(request with { Id = userId });
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .RequireAuthorization()
+            .WithTags("Users")
+            .WithDescription("Update password")
+            .Produces<Application.Users.UseCases.ChangePassword.Response>()
+            .Produces<Application.Users.UseCases.ChangePassword.Response>(400)
+            .Produces<Application.Users.UseCases.ChangePassword.Response>(404)
+            .Produces<Application.Users.UseCases.ChangePassword.Response>(500);
     }
 }

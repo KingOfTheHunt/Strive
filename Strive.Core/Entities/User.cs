@@ -11,8 +11,10 @@ public class User : Entity
     public Password Password { get; private set; } = null!;
     public IList<Workout> Workouts { get; private set; } = [];
 
-    protected User() {}
-    
+    protected User()
+    {
+    }
+
     public User(Name name, Email email, Password password)
     {
         AddNotifications(new Contract<User>()
@@ -23,23 +25,41 @@ public class User : Entity
 
         if (!IsValid)
             return;
-        
+
         // Agrupa as notificações dos value object que compõe o 'User'.
         AddNotifications(name, email, password);
 
         if (!IsValid)
             return;
-        
+
         Name = name;
         Email = email;
         Password = password;
     }
 
-    public void ChangeName(Name name) => Name = name;
+    public void ChangeName(Name name)
+    {
+        if (!name.IsValid)
+        {
+            AddNotifications(name);
+            return;
+        }
 
-    public void ChangePassword(Password password) => Password = password;
+        Name = name;
+    }
 
-    public void ResetPassword(string newPassword, string resetCode)
+    public void ChangePassword(Password password)
+    {
+        if (!password.IsValid)
+        {
+            AddNotifications(password);
+            return;
+        }
+
+        Password = password;
+    }
+
+    public void ResetPassword(string newPasswordPlainText, string resetCode)
     {
         if (string.Equals(resetCode.Trim(), Password.ResetCode.Trim(),
                 StringComparison.InvariantCultureIgnoreCase) == false)
@@ -48,6 +68,14 @@ public class User : Entity
             return;
         }
 
-        Password = new Password(newPassword);
+        var newPassword = new Password(newPasswordPlainText);
+
+        if (!newPassword.IsValid)
+        {
+            AddNotifications(newPassword);
+            return;
+        }
+
+        Password = newPassword;
     }
 }

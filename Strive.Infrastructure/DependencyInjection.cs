@@ -29,5 +29,9 @@ public static class DependencyInjection
         // Users - Details
         services.AddTransient<Application.Users.UseCases.Details.Contracts.IRepository,
             Users.UseCases.Details.Repository>();
+        
+        // Users - Change Password
+        services.AddTransient<Application.Users.UseCases.ChangePassword.Contracts.IRepository,
+            Users.UseCases.ChangePassword.Repository>();
     }
 }
