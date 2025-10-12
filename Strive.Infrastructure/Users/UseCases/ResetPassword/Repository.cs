@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Strive.Application.Users.UseCases.ResendVerification.Contracts;
+using Strive.Application.Users.UseCases.ResetPassword.Contracts;
 using Strive.Core.Entities;
 using Strive.Infrastructure.Data;
 
-namespace Strive.Infrastructure.Users.UseCases.ResendVerification;
+namespace Strive.Infrastructure.Users.UseCases.ResetPassword;
 
 public class Repository(AppDbContext context) : IRepository
 {
@@ -15,7 +15,7 @@ public class Repository(AppDbContext context) : IRepository
         }
         catch (Exception ex)
         {
-            throw new Exception("Houve um erro ao acessar o banco.", ex);
+            throw new Exception("Houve um erro inesperado ao acessar o banco de dados.", ex);
         }
     }
 
@@ -28,11 +28,11 @@ public class Repository(AppDbContext context) : IRepository
         }
         catch (DbUpdateException ex)
         {
-            throw new Exception("Houve um problema na hora de salvar no banco de dados.", ex);
+            throw new Exception("Houve um erro ao salvar os dados no banco de dados.", ex);
         }
         catch (Exception ex)
         {
-            throw new Exception("Houve um erro inesperado", ex);
+            throw new Exception("Houve um erro inesperado.", ex);
         }
     }
 }

@@ -144,6 +144,24 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.SendPasswordResetCode.Response>(400)
             .Produces<Application.Users.UseCases.SendPasswordResetCode.Response>(404)
             .Produces<Application.Users.UseCases.SendPasswordResetCode.Response>(500);
+        
+        // Users - Reset Password
+        app.MapPost("v1/users/reset-password", async (Application.Users.UseCases.ResetPassword.Request request,
+                IMediator mediator) =>
+            {
+                var result = await mediator.SendAsync<Application.Users.UseCases.ResetPassword.Request,
+                    Application.Users.UseCases.ResetPassword.Response>(request);
 
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .WithTags("Users")
+            .WithDescription("Reset the password")
+            .Produces<Application.Users.UseCases.ResetPassword.Response>()
+            .Produces<Application.Users.UseCases.ResetPassword.Response>(400)
+            .Produces<Application.Users.UseCases.ResetPassword.Response>(404)
+            .Produces<Application.Users.UseCases.ResetPassword.Response>(500);
     }
 }
