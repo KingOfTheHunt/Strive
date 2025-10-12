@@ -8,7 +8,7 @@ namespace Strive.Infrastructure.Helpers;
 
 public static class MailHelper
 {
-    public static MimeMessage CrateMimeMessage(string from, string to, string userName, string subject, string body)
+    public static MimeMessage CreateMimeMessage(string from, string to, string userName, string subject, string body)
     {
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Strive", from));
