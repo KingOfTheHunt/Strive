@@ -23,6 +23,11 @@ public class Email : ValueObject
         Address = address;
         Verification = new Verification();
     }
+
+    public void CreateNewVerification()
+    {
+        Verification = new();
+    }
     
     public static implicit operator Email(string address) => new Email(address);
 }
