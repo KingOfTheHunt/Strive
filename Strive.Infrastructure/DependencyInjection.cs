@@ -33,5 +33,11 @@ public static class DependencyInjection
         // Users - Change Password
         services.AddTransient<Application.Users.UseCases.ChangePassword.Contracts.IRepository,
             Users.UseCases.ChangePassword.Repository>();
+        
+        // Users - Send Password Reset Code
+        services.AddTransient<Application.Users.UseCases.SendPasswordResetCode.Contracts.IRepository,
+            Users.UseCases.SendPasswordResetCode.Repository>();
+        services.AddTransient<Application.Users.UseCases.SendPasswordResetCode.Contracts.IEmailService,
+            Users.UseCases.SendPasswordResetCode.EmailService>();
     }
 }

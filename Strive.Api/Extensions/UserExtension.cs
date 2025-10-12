@@ -104,6 +104,7 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.Details.Response>(404)
             .Produces<Application.Users.UseCases.Details.Response>(500);
 
+        // Users - Change Password
         app.MapPut("v1/users/change-password", async (HttpContext context,
                 Application.Users.UseCases.ChangePassword.Request request,
                 IMediator mediator) =>
@@ -124,5 +125,25 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.ChangePassword.Response>(400)
             .Produces<Application.Users.UseCases.ChangePassword.Response>(404)
             .Produces<Application.Users.UseCases.ChangePassword.Response>(500);
+        
+        // Users - Send Password Reset Code
+        app.MapPost("v1/user/send-password-reset", async (Application.Users.UseCases
+                .SendPasswordResetCode.Request request, IMediator mediator) =>
+            {
+                var result = await mediator.SendAsync<Application.Users.UseCases.SendPasswordResetCode.Request,
+                    Application.Users.UseCases.SendPasswordResetCode.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .WithTags("Users")
+            .WithDescription("Send a reset code to change the password")
+            .Produces<Application.Users.UseCases.SendPasswordResetCode.Response>()
+            .Produces<Application.Users.UseCases.SendPasswordResetCode.Response>(400)
+            .Produces<Application.Users.UseCases.SendPasswordResetCode.Response>(404)
+            .Produces<Application.Users.UseCases.SendPasswordResetCode.Response>(500);
+
     }
 }
