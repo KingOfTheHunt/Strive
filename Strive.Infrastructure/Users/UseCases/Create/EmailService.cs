@@ -20,7 +20,7 @@ public class EmailService : IEmailService
                     <strong>Código de verificação:</strong> {user.Email.Verification.Code}<br/>
                     Esse código é válido até as {user.Email.Verification.ExpiresAt!.Value.ToLocalTime()}
                     """;
-        var message = MailHelper.CrateMimeMessage(from, to, userName, subject, body);
+        var message = MailHelper.CreateMimeMessage(from, to, userName, subject, body);
         await MailHelper.SendEmailAsync(message, cancellationToken);
     }
 }

@@ -63,5 +63,24 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.Authenticate.Response>()
             .Produces<Application.Users.UseCases.Authenticate.Response>(400)
             .Produces<Application.Users.UseCases.Authenticate.Response>(500);
+
+        // Resend Verification Code
+        app.MapPost("v1/user/resend-verification", async (Application.Users.UseCases.ResendVerification.Request
+                request, IMediator mediator) =>
+            {
+                var result = await mediator.SendAsync<Application.Users.UseCases.ResendVerification.Request,
+                    Application.Users.UseCases.ResendVerification.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .WithTags("Users")
+            .WithDescription("Resend a new verification code.")
+            .Produces<Application.Users.UseCases.ResendVerification.Response>()
+            .Produces<Application.Users.UseCases.ResendVerification.Response>(400)
+            .Produces<Application.Users.UseCases.ResendVerification.Response>(404)
+            .Produces<Application.Users.UseCases.ResendVerification.Response>(500);
     }
 }
