@@ -43,5 +43,9 @@ public static class DependencyInjection
         // Users - Reset Password
         services.AddTransient<Application.Users.UseCases.ResetPassword.Contracts.IRepository,
             Users.UseCases.ResetPassword.Repository>();
+        
+        // Users - ChangeName
+        services.AddTransient<Application.Users.UseCases.ChangeName.Contracts.IRepository,
+            Users.UseCases.ChangeName.Repository>();
     }
 }

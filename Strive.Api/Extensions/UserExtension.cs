@@ -163,5 +163,26 @@ public static class UserExtension
             .Produces<Application.Users.UseCases.ResetPassword.Response>(400)
             .Produces<Application.Users.UseCases.ResetPassword.Response>(404)
             .Produces<Application.Users.UseCases.ResetPassword.Response>(500);
+        
+        // Users - Change Name
+        app.MapPut("v1/users/change-name", async (HttpContext context,
+                Application.Users.UseCases.ChangeName.Request request, IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int userId);
+
+                var result = await mediator.SendAsync<Application.Users.UseCases.ChangeName.Request,
+                    Application.Users.UseCases.ChangeName.Response>(request with { Id = userId });
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .WithTags("Users")
+            .WithDescription("Change user name")
+            .Produces<Application.Users.UseCases.ChangeName.Response>()
+            .Produces<Application.Users.UseCases.ChangeName.Response>(400)
+            .Produces<Application.Users.UseCases.ChangeName.Response>(404)
+            .Produces<Application.Users.UseCases.ChangeName.Response>(500);
     }
 }
