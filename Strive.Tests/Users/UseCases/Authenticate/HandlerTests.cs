@@ -27,9 +27,12 @@ public class HandlerTests
         var email = new Email("jdoe@email.com");
         var password = new Password("Abc123!@");
         var request = new Request("jdoe@email.com", "Abc123!@");
+        var user = new User(name, email, password);
+        var verificationCode = user.Email.Verification.Code;
+        user.Email.Verification.Verify(verificationCode);
         _repositoryMock.Setup(r => r.GetUserByEmailAsync("jdoe@email.com",
                 It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new User(name, email, password));
+            .ReturnsAsync(user);
 
         var result = await _handler.HandleAsync(request);
 
