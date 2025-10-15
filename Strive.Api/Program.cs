@@ -18,6 +18,7 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 app.MapUserEndpoints();
+app.MapWorkoutEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

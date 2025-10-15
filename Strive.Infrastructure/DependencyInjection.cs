@@ -47,5 +47,9 @@ public static class DependencyInjection
         // Users - ChangeName
         services.AddTransient<Application.Users.UseCases.ChangeName.Contracts.IRepository,
             Users.UseCases.ChangeName.Repository>();
+        
+        // Workouts - Add Exercise
+        services.AddTransient<Application.Workouts.UseCases.AddExercise.Contracts.IRepository,
+            Workouts.UseCases.AddExercise.Repository>();
     }
 }

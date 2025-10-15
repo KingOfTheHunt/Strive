@@ -75,7 +75,6 @@ namespace Strive.Api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WorkoutId = table.Column<int>(type: "int", nullable: false),
-                    FK_Exercises_WorkoutExercises = table.Column<int>(type: "int", nullable: false),
                     ExerciseId = table.Column<int>(type: "int", nullable: false),
                     Sets = table.Column<byte>(type: "TINYINT", nullable: false),
                     Repetitions = table.Column<byte>(type: "TINYINT", nullable: true),
@@ -86,8 +85,8 @@ namespace Strive.Api.Migrations
                 {
                     table.PrimaryKey("PK_WorkoutExercises", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkoutExercises_Exercises_FK_Exercises_WorkoutExercises",
-                        column: x => x.FK_Exercises_WorkoutExercises,
+                        name: "FK_Exercises_WorkoutExercises",
+                        column: x => x.ExerciseId,
                         principalTable: "Exercises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -149,9 +148,9 @@ namespace Strive.Api.Migrations
                 column: "email");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkoutExercises_FK_Exercises_WorkoutExercises",
+                name: "IX_WorkoutExercises_ExerciseId",
                 table: "WorkoutExercises",
-                column: "FK_Exercises_WorkoutExercises");
+                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkoutExercises_WorkoutId_ExerciseId",

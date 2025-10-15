@@ -171,15 +171,12 @@ namespace Strive.Api.Migrations
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FK_Exercises_WorkoutExercises")
-                        .HasColumnType("int");
-
                     b.Property<int>("WorkoutId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FK_Exercises_WorkoutExercises");
+                    b.HasIndex("ExerciseId");
 
                     b.HasIndex(new[] { "WorkoutId", "ExerciseId" }, "IX_WorkoutExercises_WorkoutId_ExerciseId")
                         .IsUnique();
@@ -334,9 +331,10 @@ namespace Strive.Api.Migrations
                 {
                     b.HasOne("Strive.Core.Entities.Exercise", "Exercise")
                         .WithMany("WorkoutExercises")
-                        .HasForeignKey("FK_Exercises_WorkoutExercises")
+                        .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Exercises_WorkoutExercises");
 
                     b.HasOne("Strive.Core.Entities.Workout", "Workout")
                         .WithMany("WorkoutExercises")

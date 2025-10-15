@@ -44,7 +44,8 @@ public class WorkoutExerciseMap : IEntityTypeConfiguration<WorkoutExercise>
 
         builder.HasOne(x => x.Exercise)
             .WithMany(y => y.WorkoutExercises)
-            .HasForeignKey("FK_Exercises_WorkoutExercises")
+            .HasForeignKey(x => x.ExerciseId)
+            .HasConstraintName("FK_Exercises_WorkoutExercises")
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => new { x.WorkoutId, x.ExerciseId },
