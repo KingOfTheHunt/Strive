@@ -27,6 +27,8 @@ public class WorkoutExercise : Entity
         Weight = weight;
         Duration = duration;
         
+        AddNotifications(sets);
+        
         if (repetitions is not null)
             AddNotifications(repetitions);
         
