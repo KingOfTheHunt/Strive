@@ -17,6 +17,26 @@ public class WorkoutExercise : Entity
     
     protected WorkoutExercise() {}
 
+    public WorkoutExercise(int workoutId, int exerciseId, WorkoutSets sets, WorkoutRepetitions? repetitions,
+        ExerciseWeight? weight, ExerciseTime? duration)
+    {
+        WorkoutId = workoutId;
+        ExerciseId = exerciseId;
+        Sets = sets;
+        Repetitions = repetitions;
+        Weight = weight;
+        Duration = duration;
+        
+        if (repetitions is not null)
+            AddNotifications(repetitions);
+        
+        if (weight is not null)
+            AddNotifications(weight);
+        
+        if (duration is not null)
+            AddNotifications(duration);
+    }
+    
     private WorkoutExercise(int workoutId, int exerciseId, WorkoutSets sets)
     {
         WorkoutId = workoutId;
