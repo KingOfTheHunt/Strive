@@ -44,6 +44,12 @@ public class Workout : Entity
             AddNotification("exercise", "O exercício escolhido já faz parte do seu treino.");
             return;
         }
+
+        if (!exercise.IsValid)
+        {
+            AddNotifications(exercise);
+            return;
+        }
         
         WorkoutExercises.Add(exercise);
     }
