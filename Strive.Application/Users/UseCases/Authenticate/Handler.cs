@@ -25,10 +25,13 @@ public class Handler(IRepository repository, ILogger<Handler> logger) : IHandler
             logger.LogError(ex, "Erro ao acessar o banco de dados.");
             return new Response(false, "Erro ao acessar o banco de dados.", 500);
         }
-
+        
         if (user is null)
             return new Response(false, "Usuário e/ou senha incorreto(s).", 400);
 
+        if (!user.Email.Verification.IsVerified)
+            return new Response(false, "A conta precisa ser verificada primeiro.", 400);
+        
         if (!user.Password.Challenge(request.Password))
             return new Response(false, "Usuário e/ou senha incorreto(s).", 400);
 
