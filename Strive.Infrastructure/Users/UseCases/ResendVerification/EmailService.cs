@@ -11,7 +11,7 @@ public class EmailService : IEmailService
     {
         var from = Configuration.Smtp.Login;
         var to = user.Email.Address;
-        var username = user.ToString();
+        var username = user.Name.ToString();
         var subject = "Reenvio do código de verificação do Strive.";
         var body = $"""
                     Olá, {username}!<br/>
