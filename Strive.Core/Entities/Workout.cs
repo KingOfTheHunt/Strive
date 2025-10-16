@@ -186,7 +186,7 @@ public class Workout : Entity
         WorkoutExercises.FirstOrDefault(e => e.ExerciseId == exerciseId);
 
     private WorkoutSession? GetWorkoutSessionById(int workoutSessionId) =>
-        WorkoutSessions.FirstOrDefault(x => x.Id == workoutSessionId && x.WorkoutId == Id);
+        WorkoutSessions.FirstOrDefault(x => x.Id == workoutSessionId);
 
     private void Validate(string workoutName)
     {

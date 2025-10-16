@@ -22,7 +22,7 @@ public static class WorkoutExtension
             })
             .RequireAuthorization()
             .WithTags("Workouts")
-            .WithDescription("Creates a new workout")
+            .WithDescription("Create a new workout")
             .Produces<Application.Workouts.UseCases.Create.Response>(201)
             .Produces<Application.Workouts.UseCases.Create.Response>(400)
             .Produces<Application.Workouts.UseCases.Create.Response>(500);
@@ -51,5 +51,27 @@ public static class WorkoutExtension
             .Produces<Application.Workouts.UseCases.AddExercise.Response>(400)
             .Produces<Application.Workouts.UseCases.AddExercise.Response>(404)
             .Produces<Application.Workouts.UseCases.AddExercise.Response>(500);
+        
+        // Workouts - Remove Exercise
+        app.MapDelete("v1/workouts/{workoutId:int}/remove-exercise/{exerciseId:int}", async (HttpContext context,
+                int workoutId, int exerciseId, IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int userId);
+                var request = new Application.Workouts.UseCases.RemoveExercise.Request(userId, workoutId, exerciseId);
+                var result = await mediator.SendAsync<Application.Workouts.UseCases.RemoveExercise.Request,
+                    Application.Workouts.UseCases.RemoveExercise.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .RequireAuthorization()
+            .WithTags("Workouts")
+            .WithDescription("Remove an exercise from a workout.")
+            .Produces<Application.Workouts.UseCases.RemoveExercise.Response>()
+            .Produces<Application.Workouts.UseCases.RemoveExercise.Response>(400)
+            .Produces<Application.Workouts.UseCases.RemoveExercise.Response>(404)
+            .Produces<Application.Workouts.UseCases.RemoveExercise.Response>(500);
     }
 }
