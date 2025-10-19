@@ -98,5 +98,26 @@ public static class WorkoutExtension
             .Produces<Application.Workouts.UseCases.UpdateExercise.Response>(400)
             .Produces<Application.Workouts.UseCases.UpdateExercise.Response>(404)
             .Produces<Application.Workouts.UseCases.UpdateExercise.Response>(500);
+
+        app.MapGet("v1/workouts/show", async (HttpContext context, IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int userId);
+                var request = new Application.Workouts.UseCases.Show.Request(userId);
+
+                var result = await mediator.SendAsync<Application.Workouts.UseCases.Show.Request,
+                    Application.Workouts.UseCases.Show.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .RequireAuthorization()
+            .WithTags("Workouts")
+            .WithDescription("Show all workouts")
+            .Produces<Application.Workouts.UseCases.Show.Response>()
+            .Produces<Application.Workouts.UseCases.Show.Response>(400)
+            .Produces<Application.Workouts.UseCases.Show.Response>(404)
+            .Produces<Application.Workouts.UseCases.Show.Response>(500);
     }
 }
