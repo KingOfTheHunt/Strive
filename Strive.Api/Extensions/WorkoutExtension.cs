@@ -26,7 +26,7 @@ public static class WorkoutExtension
             .Produces<Application.Workouts.UseCases.Create.Response>(201)
             .Produces<Application.Workouts.UseCases.Create.Response>(400)
             .Produces<Application.Workouts.UseCases.Create.Response>(500);
-        
+
         // Workouts - Add Exercise
         app.MapPost("v1/workouts/{id:int}/add-exercise", async (HttpContext context, int id,
                 Application.Workouts.UseCases.AddExercise.Request request, IMediator mediator) =>
@@ -51,7 +51,7 @@ public static class WorkoutExtension
             .Produces<Application.Workouts.UseCases.AddExercise.Response>(400)
             .Produces<Application.Workouts.UseCases.AddExercise.Response>(404)
             .Produces<Application.Workouts.UseCases.AddExercise.Response>(500);
-        
+
         // Workouts - Remove Exercise
         app.MapDelete("v1/workouts/{workoutId:int}/remove-exercise/{exerciseId:int}", async (HttpContext context,
                 int workoutId, int exerciseId, IMediator mediator) =>
@@ -73,5 +73,30 @@ public static class WorkoutExtension
             .Produces<Application.Workouts.UseCases.RemoveExercise.Response>(400)
             .Produces<Application.Workouts.UseCases.RemoveExercise.Response>(404)
             .Produces<Application.Workouts.UseCases.RemoveExercise.Response>(500);
+
+        // Workouts - Update Exercise
+        app.MapPut("v1/workouts/{workoutId:int}/update-exercise/{exerciseId}", async (HttpContext context,
+                int workoutId, int exerciseId, Application.Workouts.UseCases.UpdateExercise.Request request,
+                IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int userId);
+                var result = await mediator.SendAsync<Application.Workouts.UseCases.UpdateExercise.Request,
+                    Application.Workouts.UseCases.UpdateExercise.Response>(request with
+                {
+                    WorkoutId = workoutId, UserId = userId, ExerciseId = exerciseId
+                });
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .RequireAuthorization()
+            .WithTags("Workouts")
+            .WithDescription("Update an exercise")
+            .Produces<Application.Workouts.UseCases.UpdateExercise.Response>()
+            .Produces<Application.Workouts.UseCases.UpdateExercise.Response>(400)
+            .Produces<Application.Workouts.UseCases.UpdateExercise.Response>(404)
+            .Produces<Application.Workouts.UseCases.UpdateExercise.Response>(500);
     }
 }

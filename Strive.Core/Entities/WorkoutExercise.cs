@@ -101,7 +101,7 @@ public class WorkoutExercise : Entity
         Sets = sets;
     }
 
-    public void UpdateRepetitions(byte newRepetitions)
+    public void UpdateRepetitions(byte? newRepetitions)
     {
         var repetitions = new WorkoutRepetitions(newRepetitions);
 
@@ -114,7 +114,7 @@ public class WorkoutExercise : Entity
         Repetitions = repetitions;
     }
 
-    public void UpdateWeight(float newWeight)
+    public void UpdateWeight(float? newWeight)
     {
         var weight = new ExerciseWeight(newWeight);
 
@@ -127,7 +127,7 @@ public class WorkoutExercise : Entity
         Weight = weight;
     }
 
-    public void UpdateDuration(int newDuration)
+    public void UpdateDuration(int? newDuration)
     {
         var duration = new ExerciseTime(newDuration);
 

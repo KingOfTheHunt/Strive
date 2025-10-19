@@ -59,5 +59,9 @@ public static class DependencyInjection
         // Workouts - Remove Exercise
         services.AddTransient<Application.Workouts.UseCases.RemoveExercise.Contracts.IRepository,
             Workouts.UseCases.RemoveExercise.Repository>();
+        
+        // Workout - Update Exercise
+        services.AddTransient<Application.Workouts.UseCases.UpdateExercise.Contracts.IRepository,
+            Workouts.UseCases.UpdateExercise.Repository>();
     }
 }

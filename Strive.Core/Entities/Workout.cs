@@ -81,7 +81,7 @@ public class Workout : Entity
         AddNotifications(exercise);
     }
 
-    public void UpdateExerciseRepetitions(int exerciseId, byte repetitions)
+    public void UpdateExerciseRepetitions(int exerciseId, byte? repetitions)
     {
         var exercise = GetExerciseById(exerciseId);
 
@@ -95,7 +95,7 @@ public class Workout : Entity
         AddNotifications(exercise);
     }
 
-    public void UpdateExerciseWeight(int exerciseId, float weight)
+    public void UpdateExerciseWeight(int exerciseId, float? weight)
     {
         var exercise = GetExerciseById(exerciseId);
 
@@ -109,7 +109,7 @@ public class Workout : Entity
         AddNotifications(exercise);
     }
 
-    public void UpdateExerciseDuration(int exerciseId, int duration)
+    public void UpdateExerciseDuration(int exerciseId, int? duration)
     {
         var exercise = GetExerciseById(exerciseId);
 

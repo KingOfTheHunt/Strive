@@ -9,18 +9,21 @@ public class ExerciseWeight : ValueObject
     
     protected ExerciseWeight() {}
 
-    public ExerciseWeight(float weight)
+    public ExerciseWeight(float? weight)
     {
-        AddNotifications(new Contract<ExerciseWeight>()
-            .Requires()
-            .IsGreaterThan(weight, 0, nameof(weight), 
-                "O peso deve ser maior do que 0kg.")
-            .IsLowerOrEqualsThan(weight, 170, nameof(weight), 
-                "O peso deve ser menor do que 170kg"));
+        if (weight.HasValue)
+        {
+            AddNotifications(new Contract<ExerciseWeight>()
+                .Requires()
+                .IsGreaterThan(weight.Value, 0, nameof(weight),
+                    "O peso deve ser maior do que 0kg.")
+                .IsLowerOrEqualsThan(weight.Value, 170, nameof(weight),
+                    "O peso deve ser menor do que 170kg"));
 
-        if (!IsValid)
-            return;
-
+            if (!IsValid)
+                return;
+        }
+        
         Weight = weight;
     }
 }

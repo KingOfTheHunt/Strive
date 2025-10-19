@@ -9,18 +9,21 @@ public class ExerciseTime : ValueObject
     
     protected ExerciseTime() {}
 
-    public ExerciseTime(int timeInSeconds)
+    public ExerciseTime(int? timeInSeconds)
     {
-        AddNotifications(new Contract<ExerciseTime>()
-            .Requires()
-            .IsGreaterOrEqualsThan(timeInSeconds, 10, nameof(timeInSeconds),
-                "O tempo do exercício não pode ser menor do que 10 segundos.")
-            .IsLowerOrEqualsThan(timeInSeconds, 360, nameof(timeInSeconds),
-                "O tempo do exercício não pode ultrapassar 360 segundos."));
+        if (timeInSeconds.HasValue)
+        {
+            AddNotifications(new Contract<ExerciseTime>()
+                .Requires()
+                .IsGreaterOrEqualsThan(timeInSeconds.Value, 10, nameof(timeInSeconds),
+                    "O tempo do exercício não pode ser menor do que 10 segundos.")
+                .IsLowerOrEqualsThan(timeInSeconds.Value, 360, nameof(timeInSeconds),
+                    "O tempo do exercício não pode ultrapassar 360 segundos."));
 
-        if (!IsValid)
-            return;
-
+            if (!IsValid)
+                return;
+        }
+        
         TimeInSeconds = timeInSeconds;
     }
 }

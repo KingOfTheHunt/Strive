@@ -9,18 +9,21 @@ public class WorkoutRepetitions : ValueObject
     
     protected WorkoutRepetitions() {}
 
-    public WorkoutRepetitions(byte repetitions)
+    public WorkoutRepetitions(byte? repetitions)
     {
-        AddNotifications(new Contract<WorkoutRepetitions>()
-            .Requires()
-            .IsGreaterOrEqualsThan(repetitions, 5, nameof(repetitions),
-            "O número de repetições precisa ser maior ou igual a 5.")
-            .IsLowerOrEqualsThan(repetitions, 20, nameof(repetitions),
-                "O número de repetições precisa ser menor ou igual a 20."));
-
-        if (!IsValid)
-            return;
-
+        if (repetitions.HasValue)
+        {
+            AddNotifications(new Contract<WorkoutRepetitions>()
+                .Requires()
+                .IsGreaterOrEqualsThan(repetitions.Value, 5, nameof(repetitions),
+                    "O número de repetições precisa ser maior ou igual a 5.")
+                .IsLowerOrEqualsThan(repetitions.Value, 20, nameof(repetitions),
+                    "O número de repetições precisa ser menor ou igual a 20."));
+            
+            if (!IsValid)
+                return;
+        }
+        
         Repetitions = repetitions;
     }
 }

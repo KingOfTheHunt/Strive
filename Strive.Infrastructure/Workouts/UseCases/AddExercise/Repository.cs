@@ -36,7 +36,7 @@ public class Repository(AppDbContext context) : IRepository
     {
         try
         {
-            context.Workouts.Update(workout);
+            // context.Workouts.Update(workout);
             await context.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException ex)
