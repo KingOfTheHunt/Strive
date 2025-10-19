@@ -6,9 +6,9 @@ public class Response(bool success, string message, int statusCode,
     IReadOnlyCollection<Notification>? notifications = null) 
     : Core.Abstractions.Response(success, message, statusCode, notifications)
 {
-    public ResponseData? Data { get; set; }
+    public IReadOnlyCollection<ResponseData> Data { get; set; }
 
-    public Response(bool sucess, string message, int statusCode, ResponseData data)
+    public Response(bool sucess, string message, int statusCode, IReadOnlyCollection<ResponseData> data)
     : this(sucess, message, statusCode)
     {
         Data = data;
@@ -17,10 +17,6 @@ public class Response(bool success, string message, int statusCode,
 
 public class ResponseData
 {
-    public IEnumerable<string> Workouts { get; set; }
-
-    public ResponseData(IEnumerable<string> workouts)
-    {
-        Workouts = workouts;
-    }
+    public int WorkoutId { get; set; }
+    public string WorkoutName { get; set; } = string.Empty;
 }

@@ -12,12 +12,13 @@ public class Handler(IRepository repository, ILogger<Handler> logger) : IHandler
 
         if (!contract.IsValid)
             return new Response(false, "Dados inválidos.", 400, contract.Notifications);
-
-        IEnumerable<string> workouts = [];
-
+        
         try
         {
-            workouts = await repository.GetAllWorkoutsAsync(request.UserId, cancellationToken);
+            var data = await repository.GetAllWorkoutsAsync(request.UserId, cancellationToken);
+            
+            logger.LogInformation("Exibindo os treinos do usuário de Id {userId}", request.UserId);
+            return new Response(true, "Treinos obtidos com sucesso.", 200, data);
         }
         catch (Exception ex)
         {
@@ -25,12 +26,5 @@ public class Handler(IRepository repository, ILogger<Handler> logger) : IHandler
             return new Response(false, "Houve um erro na hora de buscar os treinos no banco.", 
                 500);
         }
-
-        if (workouts.Any() == false)
-            return new Response(false, "Não há nenhum treino cadastrado.", 404);
-        
-        var data = new ResponseData(workouts);
-        logger.LogInformation("Exibindo os treinos do usuário de Id {userId}", request.UserId);
-        return new Response(true, "Treinos obtidos com sucesso.", 200, data);
     }
 }
