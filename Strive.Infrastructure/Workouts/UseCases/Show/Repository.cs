@@ -8,7 +8,14 @@ public class Repository(AppDbContext context) : IRepository
 {
     public async Task<IEnumerable<string>> GetAllWorkoutsAsync(int userId, CancellationToken cancellationToken)
     {
-        return await context.Workouts.AsNoTracking().Where(x => x.UserId == userId)
-            .Select(x => x.Name).ToArrayAsync(cancellationToken);
+        try
+        {
+            return await context.Workouts.AsNoTracking().Where(x => x.UserId == userId)
+                .Select(x => x.Name).ToArrayAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Houve um erro ao buscar os treino no banco de dados.", ex);
+        }
     }
 }

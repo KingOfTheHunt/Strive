@@ -16,7 +16,7 @@ public static class WorkoutExtension
                     Application.Workouts.UseCases.Create.Response>(request with { UserId = userId });
 
                 if (result.Success)
-                    return Results.Created($"v1/workouts/{result.Data!.WorkoutId}", result);
+                    return Results.Created($"v1/workouts/{result.Data!.WorkoutId}/details", result);
 
                 return Results.Json(result, statusCode: result.StatusCode);
             })
@@ -119,5 +119,27 @@ public static class WorkoutExtension
             .Produces<Application.Workouts.UseCases.Show.Response>(400)
             .Produces<Application.Workouts.UseCases.Show.Response>(404)
             .Produces<Application.Workouts.UseCases.Show.Response>(500);
+
+        app.MapGet("v1/workouts/{workoutId:int}/details", async (HttpContext context,
+                int workoutId, IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int userId);
+                var request = new Application.Workouts.UseCases.Details.Request(workoutId, userId);
+
+                var result = await mediator.SendAsync<Application.Workouts.UseCases.Details.Request,
+                    Application.Workouts.UseCases.Details.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .RequireAuthorization()
+            .WithTags("Workouts")
+            .WithDescription("Show all the exercises of an workout.")
+            .Produces<Application.Workouts.UseCases.Details.Response>()
+            .Produces<Application.Workouts.UseCases.Details.Response>(400)
+            .Produces<Application.Workouts.UseCases.Details.Response>(404)
+            .Produces<Application.Workouts.UseCases.Details.Response>(500);
     }
 }

@@ -30,7 +30,7 @@ public class Handler(IRepository repository, ILogger<Handler> logger) : IHandler
             return new Response(false, "Não há nenhum treino cadastrado.", 404);
         
         var data = new ResponseData(workouts);
-        logger.LogInformation("Exibindo os treino do usuário de Id {userId}", request.UserId);
+        logger.LogInformation("Exibindo os treinos do usuário de Id {userId}", request.UserId);
         return new Response(true, "Treinos obtidos com sucesso.", 200, data);
     }
 }
