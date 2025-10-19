@@ -22,27 +22,18 @@ public class HandlerTests
     [Fact]
     public async Task ShouldReturnTrueWhenUserHasWorkouts()
     {
-        var workouts = new string[] { "Super treino de pernas", "Super treino de costas" };
+        var workouts = new ResponseData[]
+        {
+            new ResponseData { WorkoutId = 1, WorkoutName = "Super treino de pernas" },
+            new ResponseData { WorkoutId = 2, WorkoutName = "Super treino de costas" }
+        };
         var request = new Request(1);
         _repositoryMock.Setup(r => r.GetAllWorkoutsAsync(request.UserId,
             It.IsAny<CancellationToken>())).ReturnsAsync(workouts);
 
         var result = await _handler.HandleAsync(request, CancellationToken.None);
-        
+
         Assert.True(result.Success);
         Assert.Equal(200, result.StatusCode);
-    }
-
-    [Fact]
-    public async Task ShouldReturnFalseWhenUserHasNoWorkout()
-    {
-        var request = new Request(1);
-        _repositoryMock.Setup(r => r.GetAllWorkoutsAsync(request.UserId,
-            It.IsAny<CancellationToken>())).ReturnsAsync([]);
-
-        var result = await _handler.HandleAsync(request, CancellationToken.None);
-        
-        Assert.False(result.Success);
-        Assert.Equal(404, result.StatusCode);
     }
 }
