@@ -125,6 +125,12 @@ public class Workout : Entity
 
     public void AddWorkoutSession(WorkoutSession session)
     {
+        if (!session.IsValid)
+        {
+            AddNotifications(session);
+            return;
+        }
+        
         WorkoutSessions.Add(session);
     }
 
