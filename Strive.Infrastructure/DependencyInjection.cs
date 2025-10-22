@@ -75,5 +75,9 @@ public static class DependencyInjection
         // Sessions - Schedule
         services.AddTransient<Application.Sessions.UseCases.Schedule.Contracts.IRepository,
             Sessions.UseCases.Schedule.Repository>();
+        
+        // Sessions - Reschedule
+        services.AddTransient<Application.Sessions.UseCases.Reschedule.Contracts.IRepository,
+            Sessions.UseCases.Reschedule.Repository>();
     }
 }
