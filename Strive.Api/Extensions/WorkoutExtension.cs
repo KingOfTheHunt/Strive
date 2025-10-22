@@ -141,28 +141,5 @@ public static class WorkoutExtension
             .Produces<Application.Workouts.UseCases.Details.Response>(400)
             .Produces<Application.Workouts.UseCases.Details.Response>(404)
             .Produces<Application.Workouts.UseCases.Details.Response>(500);
-        
-        // Workouts - Schedule
-        app.MapPost("v1/workouts/schedule/{workoutId}", async (HttpContext context,
-                int workoutId, Application.Workouts.UseCases.Schedule.Request request, IMediator mediator) =>
-            {
-                int.TryParse(context.User.Identity!.Name, out int userId);
-
-                var result = await mediator.SendAsync<Application.Workouts.UseCases.Schedule.Request,
-                    Application.Workouts.UseCases.Schedule.Response>(
-                    request with { WorkoutId = workoutId, UserId = userId });
-
-                if (result.Success)
-                    return Results.Ok(result);
-
-                return Results.Json(result, statusCode: result.StatusCode);
-            })
-            .RequireAuthorization()
-            .WithTags("Workouts")
-            .WithDescription("Schedule a workout")
-            .Produces<Application.Workouts.UseCases.Schedule.Response>()
-            .Produces<Application.Workouts.UseCases.Schedule.Response>(400)
-            .Produces<Application.Workouts.UseCases.Schedule.Response>(404)
-            .Produces<Application.Workouts.UseCases.Schedule.Response>(500);
     }
 }

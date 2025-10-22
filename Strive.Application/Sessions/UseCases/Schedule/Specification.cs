@@ -1,7 +1,7 @@
 using Flunt.Notifications;
 using Flunt.Validations;
 
-namespace Strive.Application.Workouts.UseCases.Schedule;
+namespace Strive.Application.Sessions.UseCases.Schedule;
 
 public static class Specification
 {

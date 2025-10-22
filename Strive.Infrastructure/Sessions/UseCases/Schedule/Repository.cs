@@ -1,17 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using Strive.Application.Workouts.UseCases.Schedule.Contracts;
+using Strive.Application.Sessions.UseCases.Schedule.Contracts;
 using Strive.Core.Entities;
 using Strive.Infrastructure.Data;
 
-namespace Strive.Infrastructure.Workouts.UseCases.Schedule;
+namespace Strive.Infrastructure.Sessions.UseCases.Schedule;
 
 public class Repository(AppDbContext context) : IRepository
 {
-    public async Task<Workout?> GetWorkoutByIdAsync(int workoutId, int userId, CancellationToken cancellationToken)
+    public async Task<bool> AnyWorkoutAsync(int workoutId, int userId, CancellationToken cancellationToken)
     {
         try
         {
-            return await context.Workouts.FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId,
+            return await context.Workouts.AnyAsync(x => x.Id == workoutId && x.UserId == userId,
                 cancellationToken);
         }
         catch (Exception ex)
@@ -20,10 +20,11 @@ public class Repository(AppDbContext context) : IRepository
         }
     }
 
-    public async Task SaveAsync(CancellationToken cancellationToken)
+    public async Task SaveAsync(WorkoutSession workoutSession, CancellationToken cancellationToken)
     {
         try
         {
+            await context.WorkoutSessions.AddAsync(workoutSession, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException ex)

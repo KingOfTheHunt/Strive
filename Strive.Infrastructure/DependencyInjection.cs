@@ -72,8 +72,8 @@ public static class DependencyInjection
         services.AddTransient<Application.Workouts.UseCases.Details.Contracts.IRepository,
             Workouts.UseCases.Details.Repository>();
         
-        // Workouts - Schedule
-        services.AddTransient<Application.Workouts.UseCases.Schedule.Contracts.IRepository,
-            Workouts.UseCases.Schedule.Repository>();
+        // Sessions - Schedule
+        services.AddTransient<Application.Sessions.UseCases.Schedule.Contracts.IRepository,
+            Sessions.UseCases.Schedule.Repository>();
     }
 }

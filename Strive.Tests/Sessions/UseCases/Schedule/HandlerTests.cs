@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Logging;
 using Moq;
-using Strive.Application.Workouts.UseCases.Schedule.Contracts;
-using Strive.Application.Workouts.UseCases.Schedule;
+using Strive.Application.Sessions.UseCases.Schedule.Contracts;
+using Strive.Application.Sessions.UseCases.Schedule;
 using Strive.Core.Entities;
 
-namespace Strive.Tests.Workouts.UseCases.Schedule;
+namespace Strive.Tests.Sessions.UseCases.Schedule;
 
 public class HandlerTests
 {
@@ -24,8 +24,8 @@ public class HandlerTests
     {
         var workout = new Workout("Super treino de costas.", 1);
         var request = new Request(1, 1, DateTime.UtcNow.AddHours(3));
-        _repositoryMock.Setup(r => r.GetWorkoutByIdAsync(request.WorkoutId, request.UserId,
-            It.IsAny<CancellationToken>())).ReturnsAsync(workout);
+        _repositoryMock.Setup(r => r.AnyWorkoutAsync(request.WorkoutId, request.UserId,
+            It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
         var result = await _handler.HandleAsync(request);
         
@@ -38,8 +38,8 @@ public class HandlerTests
     {
         var workout = new Workout("Super treino de costas", 1);
         var request = new Request(1, 1, DateTime.UtcNow.AddHours(-2));
-        _repositoryMock.Setup(r => r.GetWorkoutByIdAsync(request.WorkoutId, request.UserId,
-            It.IsAny<CancellationToken>())).ReturnsAsync(workout);
+        _repositoryMock.Setup(r => r.AnyWorkoutAsync(request.WorkoutId, request.UserId,
+            It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
         var result = await _handler.HandleAsync(request);
         
