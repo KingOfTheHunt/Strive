@@ -16,8 +16,4 @@
       <ProjectReference Include="..\Strive.Core\Strive.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Sessions\UseCases\" />
-    </ItemGroup>
-
 </Project>

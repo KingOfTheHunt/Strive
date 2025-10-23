@@ -1,4 +1,5 @@
 using MedTheMediator.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Strive.Api.Extensions;
 
@@ -54,5 +55,28 @@ public static class SessionExtension
             .Produces<Application.Sessions.UseCases.Reschedule.Response>(400)
             .Produces<Application.Sessions.UseCases.Reschedule.Response>(404)
             .Produces<Application.Sessions.UseCases.Reschedule.Response>(500);
+        
+        // Sessions - List
+        app.MapGet("v1/sessions/list", async (HttpContext context,
+                [FromQuery] DateTime startDate, [FromQuery] DateTime endDate,
+                IMediator mediator) =>
+            {
+                int.TryParse(context.User.Identity!.Name, out int userId);
+                var request = new Application.Sessions.UseCases.List.Request(userId, startDate, endDate);
+
+                var result = await mediator.SendAsync<Application.Sessions.UseCases.List.Request,
+                    Application.Sessions.UseCases.List.Response>(request);
+
+                if (result.Success)
+                    return Results.Ok(result);
+
+                return Results.Json(result, statusCode: result.StatusCode);
+            })
+            .RequireAuthorization()
+            .WithTags("Sessions")
+            .WithDescription("Show the workouts that has been scheduled.")
+            .Produces<Application.Sessions.UseCases.List.Response>()
+            .Produces<Application.Sessions.UseCases.List.Response>(400)
+            .Produces<Application.Sessions.UseCases.List.Response>(500);
     }
 }
